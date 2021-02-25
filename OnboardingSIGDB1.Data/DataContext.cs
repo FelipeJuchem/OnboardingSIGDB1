@@ -27,14 +27,14 @@ namespace OnboardingSIGDB1.Data
                 .IsRequired()
                 .HasMaxLength(250);
 
-            empresa.Property(tc => tc.Id)
+            empresa.Property(x => x.Id)
                  .IsRequired();
 
 
-            empresa.Property(tc => tc.Cnpj)
+            empresa.Property(x => x.Cnpj)
                  .IsRequired();
 
-            empresa.Property(tc => tc.DataFundacao)
+            empresa.Property(x => x.DataFundacao)
                  .IsRequired();
 
 
