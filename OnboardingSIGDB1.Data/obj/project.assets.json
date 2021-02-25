@@ -588,6 +588,19 @@
         "compile": {
           "ref/netstandard1.3/System.Threading.Tasks.dll": {}
         }
+      },
+      "OnboardingSIGDB1.Domain/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "2.2.6"
+        },
+        "compile": {
+          "bin/placeholder/OnboardingSIGDB1.Domain.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/OnboardingSIGDB1.Domain.dll": {}
+        }
       }
     }
   },
@@ -2563,12 +2576,18 @@
         "system.threading.tasks.4.0.11.nupkg.sha512",
         "system.threading.tasks.nuspec"
       ]
+    },
+    "OnboardingSIGDB1.Domain/1.0.0": {
+      "type": "project",
+      "path": "../OnboardingSIGDB1.Domain/OnboardingSIGDB1.Domain.csproj",
+      "msbuildProject": "../OnboardingSIGDB1.Domain/OnboardingSIGDB1.Domain.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETStandard,Version=v2.0": [
       "Microsoft.EntityFrameworkCore >= 2.2.6",
-      "NETStandard.Library >= 2.0.3"
+      "NETStandard.Library >= 2.0.3",
+      "OnboardingSIGDB1.Domain >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -2601,7 +2620,11 @@
       "frameworks": {
         "netstandard2.0": {
           "targetAlias": "netstandard2.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Curso dotnet\\OnBoarding\\OnboardingSIGDB1.Domain\\OnboardingSIGDB1.Domain.csproj": {
+              "projectPath": "C:\\Curso dotnet\\OnBoarding\\OnboardingSIGDB1.Domain\\OnboardingSIGDB1.Domain.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
