@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OnboardingSIGDB1.Domain.Entities
+namespace OnboardingSIGDB1.Domain.Base
 {
     public abstract class Entity<TId, TEntity>
         where TId : struct 

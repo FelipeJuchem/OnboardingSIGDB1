@@ -1,32 +1,41 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using OnboardingSIGDB1.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace OnboardingSIGDB1.Data
 {
     public class DataContext : DbContext
     {
-       
-    
-   
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {}
         public DbSet<Empresa> Empresa { get; set; }
         public DbSet<Funcionario> Funcionario { get; set; }
-
         public DbSet<Cargo> Cargo { get; set; }
-
-
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=OnBoarding");
-        }
-    
+            string environment = "Development";
 
+            string settingsPath = Directory.GetCurrentDirectory();
+            string settingsFile = "appsettings.json";
+            string settingsFileEnv = $"appsettings.{environment}.json";
+
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(settingsPath)
+                .AddJsonFile(settingsFile, optional: false, reloadOnChange: true)
+                .AddJsonFile(settingsFileEnv, optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+
+            var builder = new DbContextOptionsBuilder<DataContext>();
+
+            optionsBuilder.UseSqlServer(configuration["ConnectionStrings:OnBoardingGlobal"]);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

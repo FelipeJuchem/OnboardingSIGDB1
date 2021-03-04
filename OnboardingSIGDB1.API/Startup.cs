@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OnboardingSIGDB1.Data;
+using OnboardingSIGDB1.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,17 +28,28 @@ namespace OnboardingSIGDB1.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddDbContext<DataContext>(
-                options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=OnBoarding"));
+            IOC.Startup.ConfigureServices(services, Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.Use(async (context, next) =>
+            {
+                await next.Invoke();
+
+                string method = context.Request.Method;
+                var allowedMethodsToCommit = new string[] { "POST", "PUT", "DELETE" };
+                if (allowedMethodsToCommit.Contains(method))
+                {
+                    var unitOfWork = (IUnitOfWork)context.RequestServices.GetService(typeof(IUnitOfWork));
+                    unitOfWork.Commit();
+                }
+            });
+
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
-                
+                app.UseDeveloperExceptionPage();                
             }
 
             app.UseHttpsRedirection();

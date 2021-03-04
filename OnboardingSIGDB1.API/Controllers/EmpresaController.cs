@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using OnboardingSIGDB1.Data;
 using OnboardingSIGDB1.Domain.Dto;
 using OnboardingSIGDB1.Domain.Entities;
-using OnboardingSIGDB1.Domain.Services;
+using OnboardingSIGDB1.Domain.Interfaces.Services;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -19,11 +19,11 @@ namespace OnboardingSIGDB1.API.Controllers
     [ApiController]
     public class EmpController : ControllerBase
     {
-        private readonly EmpresaServices _empresaService;
+        private readonly IEmpresaService _empresaService;
         
         private readonly DataContext _context;
         
-        public EmpController(DataContext context, EmpresaServices empresaServices)
+        public EmpController(DataContext context, IEmpresaService empresaServices)
         {
             _context = context;
             _empresaService = empresaServices;
@@ -59,17 +59,10 @@ namespace OnboardingSIGDB1.API.Controllers
             return empresaDto;
         }
 
-        
-        
         [HttpDelete("{empId}")]
-        public void Delete(int empId)
+        public async Task Delete(int empId)
         {
-            _empresaService.Deletar(empId);
+            await _empresaService.Deletar(empId);
         }
-            
-        
-
-
-
     }
 }
