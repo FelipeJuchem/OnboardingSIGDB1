@@ -37,9 +37,13 @@ namespace OnboardingSIGDB1.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
             }
 
+            app.UseHttpsRedirection();
+            
             app.UseMvc();
         }
+
     }
 }
