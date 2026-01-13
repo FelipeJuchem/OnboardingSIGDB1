@@ -1,16 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using OnboardingSIGDB1.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace OnboardingSIGDB1.API
 {
@@ -28,11 +18,11 @@ namespace OnboardingSIGDB1.API
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddDbContext<DataContext>(
-                options => options.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=OnBoarding"));
+                options => options.UseSqlServer(@"Server=127.0.0.1;Database=PDI;User Id=sa;Password=Euodeio1@;TrustServerCertificate=True;"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, Microsoft.Extensions.Hosting.IHostingEnvironment env)
         {
             if (env.IsDevelopment())
             {

@@ -58,18 +58,5 @@ namespace OnboardingSIGDB1.API.Controllers
             empresaDto.Id = empresa.Id;
             return empresaDto;
         }
-
-        
-        
-        [HttpDelete("{empId}")]
-        public void Delete(int empId)
-        {
-            _empresaService.Deletar(empId);
-        }
-            
-        
-
-
-
     }
 }

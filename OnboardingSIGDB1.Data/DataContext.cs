@@ -23,7 +23,7 @@ namespace OnboardingSIGDB1.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=OnBoarding");
+            optionsBuilder.UseSqlServer(@"Server=127.0.0.1;Database=PDI;User Id=sa;Password=Euodeio1@;TrustServerCertificate=True;");
         }
     
 
@@ -74,8 +74,6 @@ namespace OnboardingSIGDB1.Data
 
             empresa.Property(x => x.DataFundacao)
                  .IsRequired();
-
-
 
 
         }

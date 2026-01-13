@@ -1,30 +1,17 @@
-﻿using OnboardingSIGDB1.Domain.Interfaces.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-
-
-namespace OnboardingSIGDB1.Domain.Services
+﻿namespace OnboardingSIGDB1.Domain.Services
 {
     public class EmpresaServices
     {
-
-        private readonly IEmpresaRepositorio _empresaRepositorio;
-        public EmpresaServices(IEmpresaRepositorio empresaRepositorio)
+        public int CalculoDoisMaisUm()
         {
-            _empresaRepositorio = empresaRepositorio;
+            var resultado = 2 + 1;
+            return resultado;
         }
 
-        public void Deletar(int empId)
+        public int CalculoDoisMaisDois()
         {
-            //var empresa = _context.Empresa.Where(x => x.Id == empId ).FirstOrDefault();
-            //_context.Empresa.Remove(empresa);
-            //_context.SaveChanges();
-            var empresa = _empresaRepositorio.BuscarPorId(empId);
+            var resultado = 2 + 2;
+            return resultado;
         }
-
-
-
     }
 }
