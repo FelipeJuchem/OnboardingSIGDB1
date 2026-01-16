@@ -36,11 +36,12 @@ steps:
   inputs:
     command: 'test'
     projects: '**/*Tests.csproj'
-    arguments: '--collect:"XPlat Code Coverage"'
+    arguments: '--no-restore --configuration Release -s CodeCoverage.runsettings --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura''
 
 - task: reportgenerator@5
   displayName: ReportGenerator
   inputs:
-    reports: 'coverage.xml'
+    reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+    reporttypes: 'HtmlInline_AzurePipelines_Dark;Cobertura'
     targetdir: 'coveragereport'
     publishCodeCoverageResults: true
