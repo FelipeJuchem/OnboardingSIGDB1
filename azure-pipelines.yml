@@ -33,10 +33,10 @@ steps:
     projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
+  displayName: Test
   inputs:
     command: 'test'
-    projects: '**/*Tests.csproj'
-    arguments: '--no-restore --configuration Release -s CodeCoverage.runsettings --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
+    arguments: '--collect:"XPlat Code Coverage"'
 
 - task: reportgenerator@5
   displayName: ReportGenerator
