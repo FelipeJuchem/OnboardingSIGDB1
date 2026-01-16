@@ -13,6 +13,7 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  CoverageThreshold: 80
 
 steps:
 
@@ -51,3 +52,15 @@ steps:
     codeCoverageTool: Cobertura
     summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
     reportDirectory: 'coveragereport'
+
+- powershell: |
+    [xml]$coverage = Get-Content "$(Agent.TempDirectory)/**/coverage.cobertura.xml"
+    $lineRate = [double]$coverage.coverage.'line-rate'
+    $percent = [math]::Round($lineRate * 100, 2)
+
+    Write-Host "Cobertura atual: $percent%"
+
+    if ($percent -lt $(CoverageThreshold)) {
+        Write-Error "Cobertura abaixo do mínimo exigido ($(CoverageThreshold)%)"
+    }
+  displayName: Quality Gate - Code Coverage
