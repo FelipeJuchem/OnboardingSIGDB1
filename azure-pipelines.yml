@@ -46,15 +46,17 @@ steps:
     reporttypes: 'HtmlInline_AzurePipelines_Dark;Cobertura'
     targetdir: 'coveragereport'
 
-- task: PublishCodeCoverageResults@1
-  displayName: Publish Code Coverage
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
-    reportDirectory: 'coveragereport'
-
 - powershell: |
-    [xml]$coverage = Get-Content "$(Agent.TempDirectory)/**/coverage.cobertura.xml"
+    $files = Get-ChildItem -Path "$(Agent.TempDirectory)" -Recurse -Filter "coverage.cobertura.xml"
+
+    if ($files.Count -eq 0) {
+        Write-Error "Arquivo coverage.cobertura.xml não encontrado"
+    }
+
+    $file = $files[0].FullName
+    Write-Host "Arquivo de cobertura encontrado: $file"
+
+    [xml]$coverage = Get-Content $file
     $lineRate = [double]$coverage.coverage.'line-rate'
     $percent = [math]::Round($lineRate * 100, 2)
 
