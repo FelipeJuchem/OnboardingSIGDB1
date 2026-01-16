@@ -46,23 +46,27 @@ steps:
     reporttypes: 'HtmlInline_AzurePipelines_Dark;Cobertura'
     targetdir: 'coveragereport'
 
-- powershell: |
-    $files = Get-ChildItem -Path "$(Agent.TempDirectory)" -Recurse -Filter "coverage.cobertura.xml"
-
-    if ($files.Count -eq 0) {
-        Write-Error "Arquivo coverage.cobertura.xml não encontrado"
-    }
-
-    $file = $files[0].FullName
-    Write-Host "Arquivo de cobertura encontrado: $file"
-
-    [xml]$coverage = Get-Content $file
-    $lineRate = [double]$coverage.coverage.'line-rate'
-    $percent = [math]::Round($lineRate * 100, 2)
-
-    Write-Host "Cobertura atual: $percent%"
-
-    if ($percent -lt $(CoverageThreshold)) {
-        Write-Error "Cobertura abaixo do mínimo exigido ($(CoverageThreshold)%)"
-    }
+- task: PowerShell@2
   displayName: Quality Gate - Code Coverage
+  inputs:
+    targetType: 'inline'
+    pwsh: false
+    script: |
+      $files = Get-ChildItem -Path "$(Agent.TempDirectory)" -Recurse -Filter "coverage.cobertura.xml"
+
+      if ($files.Count -eq 0) {
+          Write-Error "Arquivo coverage.cobertura.xml não encontrado"
+      }
+
+      $file = $files[0].FullName
+      Write-Host "Arquivo de cobertura encontrado: $file"
+
+      [xml]$coverage = Get-Content $file
+      $lineRate = [double]$coverage.coverage.'line-rate'
+      $percent = [math]::Round($lineRate * 100, 2)
+
+      Write-Host "Cobertura atual: $percent%"
+
+      if ($percent -lt $(CoverageThreshold)) {
+          Write-Error "Cobertura abaixo do mínimo exigido ($(CoverageThreshold)%)"
+      }
