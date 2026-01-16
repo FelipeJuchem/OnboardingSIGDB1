@@ -37,7 +37,7 @@ steps:
   displayName: Test
   inputs:
     command: 'test'
-    arguments: '--collect:"XPlat Code Coverage"'
+    arguments: '--collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Include="[*.Domain]*"'
 
 - task: reportgenerator@5
   displayName: ReportGenerator
