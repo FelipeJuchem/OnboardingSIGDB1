@@ -37,3 +37,9 @@ steps:
     command: 'test'
     projects: '**/*Tests.csproj'
     arguments: '--no-build'
+
+- script: |
+    dotnet test --collect:"XPlat Code Coverage" --logger "trx;LogFileName=coverage.trx"
+    dotnet tool install coverlet.console --version 6.0.4 --tool-path coverlet
+    coverlet OnboardingSIGDB1.Tests/bin/Debug/net10.0/OnboardingSIGDB1.Tests.dll --target "dotnet" --targetargs "test --logger \"trx;LogFileName=coverage.trx\"" --format "cobertura,lcov" --output "coverage.cobertura.xml"
+  displayName: 'Executar Testes e Gerar Cobertura'
