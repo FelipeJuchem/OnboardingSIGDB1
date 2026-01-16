@@ -36,7 +36,7 @@ steps:
   inputs:
     command: 'test'
     projects: '**/*Tests.csproj'
-    arguments: '--no-restore --configuration Release -s CodeCoverage.runsettings --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura''
+    arguments: '--no-restore --configuration Release -s CodeCoverage.runsettings --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
 
 - task: reportgenerator@5
   displayName: ReportGenerator
