@@ -41,7 +41,6 @@ steps:
 - task: reportgenerator@5
   displayName: ReportGenerator
   inputs:
-    reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
-    reporttypes: 'HtmlInline_AzurePipelines_Dark;Cobertura'
+    reports: 'coverage.xml'
     targetdir: 'coveragereport'
     publishCodeCoverageResults: true
