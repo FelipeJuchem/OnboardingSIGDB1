@@ -37,14 +37,14 @@ steps:
   displayName: Test
   inputs:
     command: 'test'
+    projects: '**/*Tests.csproj'
     arguments: '--collect:"XPlat Code Coverage"'
 
-- task: reportgenerator@5
-  displayName: ReportGenerator
+- task: PublishCodeCoverageResults@2
+  displayName: Publish code coverage results
   inputs:
-    reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
-    reporttypes: 'HtmlInline_AzurePipelines_Dark;Cobertura'
-    targetdir: 'coveragereport'
+    summaryFileLocation: '$(Agent.TempDirectory)/*.xml'
+    failIfCoverageEmpty: true
 
 - task: PowerShell@2
   displayName: Quality Gate - Code Coverage
