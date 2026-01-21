@@ -1,0 +1,71 @@
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  name: Local
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  CoverageThreshold: 80
+
+steps:
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '10.0.102'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    projects: '*.sln'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    arguments: '--no-restore'
+    projects: '**/*.csproj'
+
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: 'test'
+    projects: '**/*Tests.csproj'
+    arguments: '--collect:"XPlat Code Coverage"'
+
+- task: PublishCodeCoverageResults@2
+  displayName: Publish code coverage results
+  inputs:
+    summaryFileLocation: '$(Agent.TempDirectory)/*.xml'
+    failIfCoverageEmpty: true
+
+- task: PowerShell@2
+  displayName: Quality Gate - Code Coverage
+  inputs:
+    targetType: 'inline'
+    pwsh: false
+    script: |
+      $files = Get-ChildItem -Path "$(Agent.TempDirectory)" -Recurse -Filter "coverage.cobertura.xml"
+
+      if ($files.Count -eq 0) {
+          Write-Error "Arquivo coverage.cobertura.xml não encontrado"
+      }
+
+      $file = $files[0].FullName
+      Write-Host "Arquivo de cobertura encontrado: $file"
+
+      [xml]$coverage = Get-Content $file
+      $lineRate = [double]$coverage.coverage.'line-rate'
+      $percent = [math]::Round($lineRate * 100, 2)
+
+      Write-Host "Cobertura atual: $percent%"
+
+      if ($percent -lt $(CoverageThreshold)) {
+          Write-Error "Cobertura abaixo do mínimo exigido ($(CoverageThreshold)%)"
